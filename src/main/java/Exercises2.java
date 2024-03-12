@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
+
 
 public class Exercises2 {
 
@@ -14,8 +16,19 @@ public class Exercises2 {
     */
 
     public int[] twoSum(int[] nums, int target) {
-        // TODO
-        return null;
+        int arraySize = nums.length;
+        int[] expected = new int[2];
+
+        for(int i = 0 ; i < arraySize ; i++){
+            for(int j = i+1 ; j < arraySize ; j++){
+                if(nums[i] + nums[j] == target){
+                    expected[0] = i;
+                    expected[1] = j;
+                    break;
+                }
+            }
+        }
+        return expected;
     }
 
     /*
@@ -48,9 +61,69 @@ public class Exercises2 {
     Given a roman numeral, convert it to an integer.
     */
 
-    public int romanToInt(String s) {
-        // TODO
-        return 0;
+    public long romanToInt(String s) {
+        long answer = 0;
+        for(int i = 0 ; i < s.length() ; ++i){
+            if(s.charAt(i) == 'I' || s.charAt(i) == 'X' || s.charAt(i) =='C'){
+                if(i < s.length() - 1 && (s.charAt(i+1) == 'V' || s.charAt(i+1) == 'L' || s.charAt(i+1) == 'D' || s.charAt(i+1) == 'X' || s.charAt(i+1) == 'C' || s.charAt(i+1) == 'M')){
+                    if(s.charAt(i) == 'I' && s.charAt(i+1) == 'V'){
+                        answer += 4;
+                        i++;
+                    }
+                    else if(s.charAt(i) == 'I' && s.charAt(i+1) == 'X'){
+                        answer += 9;
+                        i++;
+                    }
+                    else if(s.charAt(i) == 'X' && s.charAt(i+1) == 'L'){
+                        answer += 40;
+                        i++;
+                    }
+                    else if(s.charAt(i) == 'X' && s.charAt(i+1) == 'C'){
+                        answer += 90;
+                        i++;
+                    }
+                    else if(s.charAt(i) == 'C' && s.charAt(i+1) == 'D'){
+                        answer += 400;
+                        i++;
+                    }
+                    else if(s.charAt(i) == 'C' && s.charAt(i+1) == 'M'){
+                        answer += 900;
+                        i++;
+                    }
+                }
+                else{
+                    if(s.charAt(i) == 'I'){
+                        answer += 1;
+                    }
+                    else if(s.charAt(i) == 'X'){
+                        answer += 10;
+                    }
+                    else if(s.charAt(i) == 'C'){
+                        System.out.println("Happy");
+                        answer += 100;
+                    }
+                }
+            }
+            else{
+                if(s.charAt(i) == 'V'){
+                    answer += 5;
+                    continue;
+                }
+                else if(s.charAt(i) == 'L'){
+                    answer += 50;
+                    continue;
+                }
+                else if(s.charAt(i) == 'D'){
+                    answer += 500;
+                    continue;
+                }
+                else if(s.charAt(i) == 'M'){
+                    answer += 1000;
+                    continue;
+                }
+            }
+        }
+        return answer;
     }
 
     /*
@@ -59,11 +132,54 @@ public class Exercises2 {
     */
 
     public List<List<Integer>> permute(int[] nums) {
-        // TODO
-        return null;
+        List<List<Integer>> outer = new ArrayList<>();
+        recursivePermute(nums, new ArrayList<>(), outer);
+        return outer;
+    }
+
+    private void recursivePermute(int[] nums, List<Integer> inner, List<List<Integer>> outer) {
+        if (inner.size() == nums.length) {
+            outer.add(new ArrayList<>(inner));
+        } else {
+            for (int i = 0; i < nums.length; i++) {
+                if (inner.contains(nums[i])) {
+                    continue;
+                }
+                inner.add(nums[i]);
+                recursivePermute(nums, inner, outer);
+                inner.remove(inner.size() - 1);
+            }
+        }
     }
 
     public static void main(String[] args) {
-        // test your code here!
+        Scanner in = new Scanner(System.in);
+        int arraySize;
+        arraySize = in.nextInt();
+        int[] nums = new int[arraySize];
+
+        //first ex
+
+        for(int i = 0 ; i < arraySize ; i++){
+            nums[i] = in.nextInt();
+        }
+        int target = in.nextInt();
+        Exercises2 obj = new Exercises2();
+        int[] expected = obj.twoSum(nums , target);
+        for(int i = 0 ; i < 2 ; i++){
+            System.out.println(expected[i]);
+        }
+
+
+        String s = in.nextLine();
+        System.out.println(obj.romanToInt(s));
+
+        int[] numbers = {1, 2, 3};
+        List<List<Integer>> permutations = obj.permute(numbers);
+
+
+
+
+
     }
 }
